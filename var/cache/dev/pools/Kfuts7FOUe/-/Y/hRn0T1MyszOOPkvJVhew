@@ -1,0 +1,168 @@
+<?php //App%255CController%255CUsersActionsController%2523userInfo
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+        clone ($p['Swagger\\Annotations\\Parameter'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Parameter')),
+        clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+        clone ($p['Nelmio\\ApiDocBundle\\Annotation\\Model'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Nelmio\\ApiDocBundle\\Annotation\\Model')),
+        clone $p['Swagger\\Context'],
+        clone ($p['Swagger\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Response')),
+        clone $p['Swagger\\Context'],
+        clone $p['Nelmio\\ApiDocBundle\\Annotation\\Model'],
+        clone $p['Swagger\\Context'],
+        clone $p['Swagger\\Annotations\\Response'],
+        clone $p['Swagger\\Context'],
+        clone $p['Swagger\\Annotations\\Response'],
+        clone $p['Swagger\\Context'],
+        clone $p['Swagger\\Annotations\\Response'],
+        clone $p['Swagger\\Context'],
+        clone ($p['Swagger\\Annotations\\Tag'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Tag')),
+        clone $p['Swagger\\Context'],
+    ],
+    null,
+    [
+        'Symfony\\Component\\Routing\\Annotation\\Route' => [
+            'path' => [
+                '/admin/users',
+            ],
+            'name' => [
+                'user_info',
+            ],
+            'methods' => [
+                [
+                    'POST',
+                ],
+            ],
+        ],
+        'stdClass' => [
+            'name' => [
+                1 => 'token_json',
+                15 => 'Admin EP',
+            ],
+            'in' => [
+                1 => 'body',
+            ],
+            '_context' => [
+                1 => $o[2],
+                3 => $o[4],
+                5 => $o[6],
+                7 => $o[8],
+                9 => $o[10],
+                11 => $o[12],
+                13 => $o[14],
+                15 => $o[16],
+            ],
+            '_unmerged' => [
+                1 => [
+                    $o[3],
+                ],
+                5 => [
+                    $o[7],
+                ],
+            ],
+            'filename' => [
+                2 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                4 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                6 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                8 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                10 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                12 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                14 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                16 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+            ],
+            'line' => [
+                2 => 977,
+                4 => 977,
+                6 => 977,
+                8 => 977,
+                10 => 977,
+                12 => 977,
+                14 => 977,
+                16 => 977,
+            ],
+            'method' => [
+                2 => 'Annotation',
+                4 => 'Annotation',
+                6 => 'Annotation',
+                8 => 'Annotation',
+                10 => 'Annotation',
+                12 => 'Annotation',
+                14 => 'Annotation',
+                16 => 'Annotation',
+            ],
+            'class' => [
+                2 => 'DocParser',
+                4 => 'DocParser',
+                6 => 'DocParser',
+                8 => 'DocParser',
+                10 => 'DocParser',
+                12 => 'DocParser',
+                14 => 'DocParser',
+                16 => 'DocParser',
+            ],
+            'namespace' => [
+                2 => 'Doctrine\\Common\\Annotations',
+                4 => 'Doctrine\\Common\\Annotations',
+                6 => 'Doctrine\\Common\\Annotations',
+                8 => 'Doctrine\\Common\\Annotations',
+                10 => 'Doctrine\\Common\\Annotations',
+                12 => 'Doctrine\\Common\\Annotations',
+                14 => 'Doctrine\\Common\\Annotations',
+                16 => 'Doctrine\\Common\\Annotations',
+            ],
+            'annotations' => [
+                2 => [
+                    $o[1],
+                ],
+                4 => [
+                    $o[3],
+                ],
+                6 => [
+                    $o[5],
+                ],
+                8 => [
+                    $o[7],
+                ],
+                10 => [
+                    $o[9],
+                ],
+                12 => [
+                    $o[11],
+                ],
+                14 => [
+                    $o[13],
+                ],
+                16 => [
+                    $o[15],
+                ],
+            ],
+            'type' => [
+                3 => 'App\\Query\\GetUserInfoQuery',
+                7 => 'App\\Model\\AdminAuthSuccessModel',
+            ],
+            'response' => [
+                5 => 200,
+                9 => 400,
+                11 => 401,
+                13 => 501,
+            ],
+            'description' => [
+                5 => 'Token was correct',
+                9 => 'The server could not understand the request due to invalid syntax',
+                11 => 'Unauthorized action user',
+                13 => 'Service configuration is incorrect',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[5],
+        $o[9],
+        $o[11],
+        $o[13],
+        $o[15],
+    ],
+    []
+); }];

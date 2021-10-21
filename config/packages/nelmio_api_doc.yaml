@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: AudiobooksService
+            description: This is service for my application
+            version: 1.0.0
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/([a-z]+)(?!/doc$) # Accepts routes under /api except /api/doc

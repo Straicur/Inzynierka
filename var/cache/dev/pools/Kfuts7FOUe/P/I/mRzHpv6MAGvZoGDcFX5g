@@ -1,0 +1,49 @@
+<?php //App%255CModel%255CGetAudiobookModel%2524folder_dir
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Swagger\\Annotations\\Property'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Property')),
+        clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'description' => [
+                'Dir',
+            ],
+            'type' => [
+                'string',
+            ],
+            'maxLength' => [
+                255,
+            ],
+            '_context' => [
+                $o[1],
+            ],
+            'filename' => [
+                1 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+            ],
+            'line' => [
+                1 => 977,
+            ],
+            'method' => [
+                1 => 'Annotation',
+            ],
+            'class' => [
+                1 => 'DocParser',
+            ],
+            'namespace' => [
+                1 => 'Doctrine\\Common\\Annotations',
+            ],
+            'annotations' => [
+                1 => [
+                    $o[0],
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+); }];

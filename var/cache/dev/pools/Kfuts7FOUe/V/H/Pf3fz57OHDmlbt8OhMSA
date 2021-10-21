@@ -1,0 +1,3 @@
+<?php //App%255CQuery%255CVerifyEmailQuery
+
+return [PHP_INT_MAX, []];

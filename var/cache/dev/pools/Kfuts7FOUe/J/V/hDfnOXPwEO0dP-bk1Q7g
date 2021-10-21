@@ -1,0 +1,56 @@
+<?php //App%255CQuery%255CGetSetsAudiobooksJsonQuery%2524publisher
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['JMS\\Serializer\\Annotation\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('JMS\\Serializer\\Annotation\\Type')),
+        clone ($p['App\\Annotations\\DataRequired'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('App\\Annotations\\DataRequired')),
+        clone ($p['Swagger\\Annotations\\Property'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Property')),
+        clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'string',
+            ],
+            'description' => [
+                2 => '$publisher',
+            ],
+            'type' => [
+                2 => 'string',
+            ],
+            'maxLength' => [
+                2 => 255,
+            ],
+            '_context' => [
+                2 => $o[3],
+            ],
+            'filename' => [
+                3 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+            ],
+            'line' => [
+                3 => 977,
+            ],
+            'method' => [
+                3 => 'Annotation',
+            ],
+            'class' => [
+                3 => 'DocParser',
+            ],
+            'namespace' => [
+                3 => 'Doctrine\\Common\\Annotations',
+            ],
+            'annotations' => [
+                3 => [
+                    $o[2],
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

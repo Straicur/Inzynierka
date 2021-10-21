@@ -1,0 +1,3 @@
+<?php //App%255CJsonModels%255CGetSetsModel
+
+return [PHP_INT_MAX, []];

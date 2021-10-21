@@ -1,0 +1,85 @@
+<?php //App%255CModel%255CGetSetsDataSuccessModel%2524get_audiobooks_data
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['JMS\\Serializer\\Annotation\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('JMS\\Serializer\\Annotation\\Type')),
+        clone ($p['Swagger\\Annotations\\Property'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Property')),
+        clone ($p['Swagger\\Annotations\\Items'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Items')),
+        clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+        clone ($p['Nelmio\\ApiDocBundle\\Annotation\\Model'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Nelmio\\ApiDocBundle\\Annotation\\Model')),
+        clone $p['Swagger\\Context'],
+        clone $p['Swagger\\Context'],
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'array<App\\JsonModels\\GetSetsAudiobooksModel>',
+            ],
+            'property' => [
+                1 => 'audiobooks-info',
+            ],
+            'description' => [
+                1 => 'Array of available sets',
+            ],
+            'type' => [
+                1 => 'array',
+                4 => 'App\\JsonModels\\GetSetsAudiobooksModel',
+            ],
+            'items' => [
+                1 => $o[2],
+            ],
+            '_context' => [
+                1 => $o[6],
+                $o[3],
+                4 => $o[5],
+            ],
+            '_unmerged' => [
+                2 => [
+                    $o[4],
+                ],
+            ],
+            'filename' => [
+                3 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                5 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+            ],
+            'line' => [
+                3 => 977,
+                5 => 977,
+                977,
+            ],
+            'method' => [
+                3 => 'Annotation',
+                5 => 'Annotation',
+                'Annotation',
+            ],
+            'class' => [
+                3 => 'DocParser',
+                5 => 'DocParser',
+                'DocParser',
+            ],
+            'namespace' => [
+                3 => 'Doctrine\\Common\\Annotations',
+                5 => 'Doctrine\\Common\\Annotations',
+                'Doctrine\\Common\\Annotations',
+            ],
+            'annotations' => [
+                3 => [
+                    $o[2],
+                ],
+                5 => [
+                    $o[4],
+                ],
+                [
+                    $o[1],
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+    ],
+    []
+); }];

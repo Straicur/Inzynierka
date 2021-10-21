@@ -1,0 +1,3 @@
+<?php //App%255CQuery%255CGetUserDeleteQuery
+
+return [PHP_INT_MAX, []];

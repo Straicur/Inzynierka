@@ -1,0 +1,68 @@
+<?php //App%255CQuery%255CGetUserEditQuery%2524role
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['JMS\\Serializer\\Annotation\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('JMS\\Serializer\\Annotation\\Type')),
+        clone ($p['App\\Annotations\\DataRequired'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('App\\Annotations\\DataRequired')),
+        clone ($p['Swagger\\Annotations\\Property'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Property')),
+        clone ($p['Swagger\\Annotations\\Items'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Items')),
+        clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+        clone $p['Swagger\\Context'],
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'array',
+            ],
+            'description' => [
+                2 => 'Roles',
+            ],
+            'type' => [
+                2 => 'array',
+                'string',
+            ],
+            'items' => [
+                2 => $o[3],
+            ],
+            '_context' => [
+                2 => $o[5],
+                $o[4],
+            ],
+            'filename' => [
+                4 => '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                '/home/damian/Inzynierka/OK/php-server/AudiobookServer/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+            ],
+            'line' => [
+                4 => 977,
+                977,
+            ],
+            'method' => [
+                4 => 'Annotation',
+                'Annotation',
+            ],
+            'class' => [
+                4 => 'DocParser',
+                'DocParser',
+            ],
+            'namespace' => [
+                4 => 'Doctrine\\Common\\Annotations',
+                'Doctrine\\Common\\Annotations',
+            ],
+            'annotations' => [
+                4 => [
+                    $o[3],
+                ],
+                [
+                    $o[2],
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

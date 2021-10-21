@@ -1,0 +1,3 @@
+<?php //App%255CJsonModels%255CGetSetsAudiobooksModel%2523setDuration
+
+return [PHP_INT_MAX, []];
