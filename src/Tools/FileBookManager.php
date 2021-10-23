@@ -8,7 +8,8 @@ use JMS\Serializer\SerializerBuilder as Serializer;
 class  FileBookManager{
 
     /**
-     * a method that reads data from a file as a string and returns it
+     *
+     * metoda która czyta dane z plików jako string i zwraca go
      * USAGE LIKE
      * $fileread= $file->readFile("/home/damian/JsonData","dsadas.txt");
      *
@@ -54,7 +55,8 @@ class  FileBookManager{
     }
 
     /**
-     * a method that write $text parameter to a file($name with extension) in $dir_path as a string
+     *
+     * metoda która zapisuje do pliku(w podanej ścieżce) tekstowego podany string
      *
      * @param String $dir_path
      *
@@ -72,7 +74,7 @@ class  FileBookManager{
         $file_parts = pathinfo($name);
 
         //--------------------------------------------------------------------------------------------------------------
-        // checking if dir_path exists and if not we are creating 
+        // Sprawdzenie czy pod podaną ścieżką isteniej  i jeśli nie to jest tworzony
         //--------------------------------------------------------------------------------------------------------------
 
 
@@ -89,7 +91,7 @@ class  FileBookManager{
 
 
         //--------------------------------------------------------------------------------------------------------------
-        // checking if file exists and if not we are creating it if yes we are override it
+        // Sprawdzenie czy podany plik txt istnieje i jeśli nie to jest tworzony a jeśli tak to dane są nadpisywane
         //--------------------------------------------------------------------------------------------------------------
 
         if(isset($file_parts['extension'])){
@@ -159,7 +161,7 @@ class  FileBookManager{
         }
 
         //--------------------------------------------------------------------------------------------------------------
-        // checking if file and directory exists and if not we are creating it if yes we are overriding it
+        // Sprawdzenie czy podana ścieżka istnieje i jeśli nie to jest tworzona a jeśli tak to dane są nadpisywane
         //--------------------------------------------------------------------------------------------------------------
 
         if(isset($file_parts['extension'])){
@@ -202,7 +204,7 @@ class  FileBookManager{
     }
 
     /**
-     * checkNameChars is checking if given $name hase and special characters and if yes it will clear it
+     * Metoda która sprawdza czy podana nazwa pliku jest poprawnie podana i usuwa wszystkie niepotrzebne znaki
      *
      * @param string $name
      *

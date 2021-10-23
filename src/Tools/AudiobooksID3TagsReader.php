@@ -5,6 +5,8 @@ namespace App\Tools;
 /**
  * Class AudiobooksID3TagsReader
  *
+ * Klasa która służy do zczytywania TagówID3 z plików mp3 naszych audiobooków
+ *
  * @package App\Tools
  */
 class AudiobooksID3TagsReader {

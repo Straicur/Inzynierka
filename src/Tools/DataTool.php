@@ -13,6 +13,14 @@ use JMS\Serializer\SerializerBuilder;
  */
 class DataTool
 {
+    /**
+     *
+     * Metoda która desarilizuje dane na podstawie podanej klasy
+     *
+     * @param $data
+     * @param $className
+     * @return mixed
+     */
     public static function getJsonData($data, $className)
     {
         $serializer = SerializerBuilder::create()->build();
@@ -22,6 +30,13 @@ class DataTool
         return $serializedObject;
     }
 
+    /**
+     *
+     * Metoda która serializuje dane do jsona
+     *
+     * @param $model
+     * @return string
+     */
     public static function makeJsonData($model)
     {
         $serializer = SerializerBuilder::create()->build();

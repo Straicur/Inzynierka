@@ -28,7 +28,8 @@ class DBTool{
     }
 
     /**
-     * A method that persist the given element in the database and you dont have to flush but default is true
+     *
+     * Metoda która wywołuje presist dla podanego elementu w bazie i jeśli nie ma potrzeby to nie trzeba flushować
      *
      * @param $repository
      *
@@ -43,7 +44,7 @@ class DBTool{
     }
 
     /**
-     * A method that removes the given element from the database and you dont have to flush but default is true
+     * Metoda która usuwa podany element z bazy i jeśli nie ma potrzeby to nie trzeba flushować
      *
      * @param $repository
      *
@@ -58,7 +59,8 @@ class DBTool{
     }
 
     /**
-     * The method which retrieves the repository(where to find something) and params to specify target , limit to limit the output and startRow for offset
+     *
+     * Metoda która otrzymuje repozytorium(Gdzie ma coś znaleźć) i parametry do specyfikacji targetu , limit to limit pobranych query a startRow to offset
      *
      * @param $repository
      *
@@ -78,7 +80,7 @@ class DBTool{
     }
 
     /**
-     * The method which retrieves the contents of the given nameQuery in given repository and params to specify target , limit to limit the output and startRow for offset
+     * Metoda ta od powyzszej różni się tym że używa NamedQuery(Na podstawie stworzonych w Entity) i jest wykorzystywana dla bardziej złożonych zapytań
      *
      * @param $repository
      *

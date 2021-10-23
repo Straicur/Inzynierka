@@ -17,7 +17,8 @@ use Symfony\Component\Filesystem\Filesystem;
 class AudiobookEngine{
 
     /**
-     * This method is adding catalog if doesn't exist and adds/modifies a json file with token and name of this catalog
+     *
+     * Metoda która tworzy nowy set jeśli nie nie istnieje i tworzy plik json dla niego a jeśli istnieje to modyfikuje plik json
      *
      * @param $token
      *
@@ -37,8 +38,8 @@ class AudiobookEngine{
     }
 
     /**
-     * This method is checking given direction for folders and json files
-     * Return is an array with names of folders and name of json file if there is any
+     *
+     * Metoda która zwraca tablicę z wszystkimi folderami w podanej ścieżce oraz pliku json danego setu
      *
      * @param $dir
      *
@@ -69,9 +70,9 @@ class AudiobookEngine{
         return [$allFolders,$jsonFile];
     }
         /**
-         * This method is returning a json of set or audiobook
          *
-         * On tu ma dostać tylko ścieche i z niej poszukać pliku json ale też sprawdza token w tym jsonie  i zwrócić go i tylke a reszta logiki w controlerze
+         * Metoda która zwraca plik json danego setu
+         *
          * @param String $token
          * @param string $dir
          * @return false|string

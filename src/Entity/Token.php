@@ -9,9 +9,9 @@ use DateTime;
 //named query do sprawdzania aktywnych
 /**
  * @ORM\Entity
- * @ORM\Table(name="token")
+ * @ORM\Table(name="Token")
  *  @NamedQueries({
- *     @NamedQuery(name="active", query="SELECT t FROM App:Token t WHERE t.active = 1"),
+ *     @NamedQuery(name="active", query="SELECT t FROM App:Token t WHERE t.active = 1 AND t.admin_id = :admin_id"),
  *     @NamedQuery(name="unactive", query="SELECT t FROM App:Token t WHERE t.active = 0")
  * })
  */

@@ -15,8 +15,14 @@ use JMS\Serializer\SerializerBuilder;
  */
 class InstitutionActionsTool
 {
-    //metoda zwracająca ilość rekordów dla rejestracji dla użytkownika i admina
-    //i w rejestracji wywołam metodę dla tego i pobiore z instytucji maxa i sprawdze czy nie przekracza
+    /**
+     *
+     * Metoda służąca do sprawdzenia czy nie przekroczono maksymalnej ilość rejesdtracji adminów i użytkowników dla podanej instytucji
+     *
+     * @param $doctrine
+     * @param bool $admin
+     * @return int
+     */
     public static function maxAccounts($doctrine , bool $admin=false): int
     {
         $entityManager = $doctrine;

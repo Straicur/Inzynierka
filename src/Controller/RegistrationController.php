@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Institution;
 use App\Entity\User;
+use App\Entity\UserInfo;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use App\Tools\DBTool;
@@ -31,7 +32,7 @@ class RegistrationController extends MyController
     }
 
     /**
-     * Endpoint for registration users
+     * Endpoint który umożliwia użytkownikowi zarejestrowanie się oraz po poprawnej rejestracji wysyła email potwierdzający
      *
      * @Route("/user/register", name="app_register", methods={"POST"})
      *
@@ -127,7 +128,7 @@ class RegistrationController extends MyController
         }
     }
     /**
-     * Endpoint for veryfi users
+     * Endpoint który weryfikuje użytkownika i po tej weryfikacji tworzy podstawowe tabele w bazie dla niego
      *
      * @Route("/verify/email", name="app_verify_email", methods={"GET"})
      *
@@ -166,7 +167,7 @@ class RegistrationController extends MyController
         $entityManager = $this->getDoctrine();
         $dbTool = new DBTool($entityManager);
 
-        $user =$dbTool->findBy(User::class, ["id" => $request->query->get('userID')]);
+        $user =$dbTool->findBy(User::class, ["user_id" => $request->query->get('userID')]);
 
 
         if($user){
@@ -179,7 +180,11 @@ class RegistrationController extends MyController
 
                 $user[0]->setIsVerified(true);
 
-                $dbTool->insertData($user[0]);
+                $userInfo = new UserInfo();
+                $userInfo->setUser_id($user[0]);
+
+                $dbTool->insertData($user[0],false);
+                $dbTool->insertData($userInfo);
 
                 $trans->commit();
 

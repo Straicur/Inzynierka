@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="User")
  *
  * @NamedQueries({
  *    @NamedQuery(name="activeUsers", query="SELECT u FROM App:User u WHERE u.isVerified = true"),
@@ -24,18 +24,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *    @NamedQuery(name="loginUser", query="SELECT u FROM App:User u WHERE u.email = :email AND u.password = :password AND u.isVerified = true")
  * })
  */
-//Sprawdzanie czy jest aktywny
-// Pobranie i wstrzyknięcie hasła
-// Pobranie wszystkich danych
-//
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="user_id", type="integer", nullable=false)
      */
-    private $id;
+    private $user_id;
 
     /**
      * @ORM\Column(name="email",type="string", length=180, unique=true, nullable=false)
@@ -65,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->user_id;
     }
 
     public function getEmail(): ?string

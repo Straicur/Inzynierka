@@ -19,7 +19,8 @@ use Nelmio\ApiDocBundle\Annotation\Model;
  */
 class LoginUser extends MyController{
     /**
-     * Endpoint for downloading all sets and some data within them
+     * Endpoint który umożliwiwia użytkownikowi zalogowanie się , po poprawnym zalogowaniu
+     * tworzy i zwraca dla frontu token który żyje 10 min
      *
      * @Route("/user/login", name="user_login", methods={"POST"})
      *
@@ -127,7 +128,7 @@ class LoginUser extends MyController{
         }
     }
     /**
-     * Endpoint for downloading all sets and some data within them
+     * Endpoint który umożliwiwia użytkownikowi wylogowanie się
      *
      * @Route("/user/logout", name="user_logout", methods={"POST"})
      *

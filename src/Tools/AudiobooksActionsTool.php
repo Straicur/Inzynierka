@@ -21,8 +21,8 @@ use ZipArchive;
 class AudiobooksActionsTool
 {
     /**
-     * This method is trying to find catalog and if its not here it will creat one and true is returned
-     * if there is on its checking if file exists if yes false is returned
+     *
+     * Metoda któ©a sprawdza szuka podanego pliku , jeśli istnieje to zwraca true a jeśli nie to false
      *
      * @param $object
      *
@@ -57,8 +57,8 @@ class AudiobooksActionsTool
         }
     }
     /**
-     * This method is checking if given file is a lastone , it will check if file sizes of all files is equal to given in object
-     * and will iterate over files to check if amount of them is equal to given in object and if yes return true
+     *
+     * Sprawdza czy wszytkie pliki zostały już zapisane i jeśli tak to zwraca true , jak nie to false
      *
      * @param $object
      *
@@ -89,9 +89,10 @@ class AudiobooksActionsTool
     }
 
     /**
-     * this method is trying to combine all given file parts into one zip
-     * it will iterate over every file in given directory and setName and will write base64 to zip file
-     * after that it will delete catalog where all parts are stored
+     *
+     * Metoda która próbuje połaczyć wszystkie częsci pliku w jeden przesłany przez admina zip
+     * Iteruje poprzez wszystkie pliki i zczytuje base64 i zapisuje do jednego pliku i po czym tworzy plik
+     * Po zczytaniu base 64 z pliku usuwa go
      *
      * @param $object
      *
@@ -107,9 +108,9 @@ class AudiobooksActionsTool
 
             $zipFile = fopen($finalFile,"a");
 
-            $files = array_diff(scandir($path), array('.', '..'));
+            $zipfiles = array_diff(scandir($path), array('.', '..'));
             $result = [];
-            foreach ($files as $file) {
+            foreach ($zipfiles as $file) {
                 $hash=strlen($object->hash_name);
                 array_push($result,substr($file, $hash));
             }
@@ -153,19 +154,22 @@ class AudiobooksActionsTool
     }
 
     /**
-     * this method is creating a json file with data from ID3 tags of mp3 file in new unziped audiobook
+     *
+     * Metoda która zapisuje wszystkie dane z tagów ID3 do jsona
      *
      * @param $object
      *
      * @param $setName
+     * @return array
      */
-    public function createAudiobookJsonData($object,$setName):void
+    public function createAudiobookJsonData($object,$setName): array
     {
         $mp3file = "";
         $id3Tags = new AudiobooksID3TagsReader();
         $id3Data = [];
         $mp3Size=0;
         $mp3Duration=0;
+        $parts=0;
         if ($handle = opendir($_ENV['MAIN_DIR'] . "/" . $setName . "/" . $object->file_name)) {
             while (false !== ($entry = readdir($handle))) {
                 if ($entry != "." && $entry != "..") {
@@ -173,9 +177,10 @@ class AudiobooksActionsTool
                     if ($file_parts['extension'] == "mp3") {
                         $mp3file = $entry;
                         if ($mp3file !== "") {
+                            $parts++;
                             $mp3Dir = $_ENV['MAIN_DIR'] . "/" . $setName . "/" . $object->file_name . "/" . $mp3file;
                             $mp3FileDuration = new MP3FileTool($mp3Dir);
-                            //TODO tu też musze dodać tą ilość partów w folderach i rozszerz wtedy query pobierające to z jsona odrazu
+
                             $mp3Duration = $mp3Duration + $mp3FileDuration->getDuration();
 
                             $mp3Size = $mp3Size + filesize($mp3Dir);
@@ -206,6 +211,7 @@ class AudiobooksActionsTool
 
         $id3Data['duration'] = MP3FileTool::formatTime($mp3Duration);
         $id3Data['size'] = number_format($mp3Size / 1048576, 2);
+        $id3Data['parts'] = $parts;
 
         if(empty($id3Data)){
             $post_data = DataTool::makeJsonData(array('Problem' => "Nie może znależć danych"));
@@ -214,12 +220,15 @@ class AudiobooksActionsTool
             $post_data = DataTool::makeJsonData($id3Data);
         }
         $file = new FileBookManager();
-        //TODO tu dajesz to w ifie i jak będzie że zwróci true to dodajemy do bazy te dane i tu mam już wtedy wszystkie audiobooki w bazie dzięki temu
+
         $file->writeObjectFile("meta+/!@Data.json",$setName."/".$object->file_name,$post_data,true);
+
+        return($id3Data);
+
     }
 
     /**
-     * this method is unziping a zip created before and after that the json with data of mp3 file is created
+     * Metoda która odpakowuje stworzony plik zip
      *
      * @param $object
      *
@@ -227,9 +236,9 @@ class AudiobooksActionsTool
      *
      * @param $fileName
      *
-     * @return bool
+     * @return array|bool
      */
-    public function unzip($object,$setName,$fileName): bool
+    public function unzip($object,$setName,$fileName)
     {
         $file = $_ENV['MAIN_DIR']."/".$setName."/".$object->file_name.".zip";
         $path = $_ENV['MAIN_DIR']."/".$setName;
@@ -248,10 +257,7 @@ class AudiobooksActionsTool
             rename($_ENV['MAIN_DIR']."/".$setName."/".$dir, $_ENV['MAIN_DIR']."/".$setName."/".$object->file_name);
 
 
-
-            $this->createAudiobookJsonData($object,$setName);
-
-            return true;
+            return $this->createAudiobookJsonData($object,$setName);
         }
         else{
             return false;
@@ -259,7 +265,7 @@ class AudiobooksActionsTool
     }
 
     /**
-     * This method is returning name of set where we have access with given token
+     * Metoda która zwraca nazwę setu do którago mamy dostęp za pomocą podatego tokenu
      *
      * @param $token
      *
@@ -305,36 +311,5 @@ class AudiobooksActionsTool
         else {
             return false;
         }
-    }
-
-    /**
-     *
-     */
-    public function getAudiobookJson(String $token,String $dir=""){
-        $audioEngine = new AudiobookEngine();
-
-        [$allFolders, $jsonFile] = $audioEngine->getDirFolders($dir);
-        $fileManager = new FileBookManager();
-        $accessedSet="";
-
-        if (!empty($json) != 0) {
-            $jsonData = $fileManager->readFile($_ENV['MAIN_DIR'] . $dir, $jsonFile);
-            if ($jsonData) {
-                $decodedJsonData = DataTool::getJsonData($jsonData, 'App\\JsonModels\\GetSetsAudiobooksJsonModel');
-                if ($decodedJsonData->access_token) {
-                    if ($token === $decodedJsonData->access_token) {
-                        $accessedSet = $decodedJsonData->name;
-                    }
-                }
-            }
-        }
-
-        if(empty($accessedSet)){
-            return false;
-        }
-        else{
-            return $accessedSet;
-        }
-
     }
 }

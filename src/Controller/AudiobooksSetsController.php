@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Engine\AudiobookEngine;
+use App\Entity\Category;
+use App\Entity\Institution;
 use App\JsonModels\GetSetsAudiobooksJsonModel;
 use App\JsonModels\GetSetsAudiobooksModel;
 use App\JsonModels\GetSetsModel;
@@ -10,6 +12,7 @@ use App\Model\GetSetsDataSuccessModel;
 use App\Model\GetSetsSuccessModel;
 use App\Tools\AudiobooksActionsTool;
 use App\Tools\DataTool;
+use App\Tools\DBTool;
 use App\Tools\FileBookManager;
 use Exception;
 use JMS\Serializer\SerializerBuilder;
@@ -22,7 +25,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 class AudiobooksSetsController extends MyController
 {
     /**
-     * Endpoint for downloading all sets and some data within them
+     * Endpoint który służy do pobierania wszystkich setów i ich dancyh
      *
      * @Route("/audiobooks/getSets", name="audiobooks_gets", methods={"POST"})
      *
@@ -123,8 +126,8 @@ class AudiobooksSetsController extends MyController
     }
 
     /**
-     * Endpoint for adding new sets with given name in request ,
-     * also it is adding a json file in this directory with accessToken and name of this catalog
+     *
+     * Endpoint który służy do dodawania setów wraz z plikiem json
      *
      *
      * Data format
@@ -190,7 +193,38 @@ class AudiobooksSetsController extends MyController
                     $added = $audioEngine->newSet($newGeneratedToken, $object->name);
 
                     if($added){
+                        $entityManager = $this->getDoctrine();
+                        $dbTool = new DBTool($entityManager);
+                        try {
+                            $em = $dbTool->getEntityManager();
+                            $transaction = $em->getConnection();
+                            $transaction->beginTransaction();
+
+                            $institution = $dbTool->findBy(Institution::class, ["name" => $_ENV['INSTITUTION_NAME']]);
+
+
+                            if($institution)
+                            {
+                                $category = new Category();
+                                $category->setName($object->name);
+                                $category->setInstitution_id($institution[0]);
+                                $dbTool->insertData($category);
+
+                                $transaction->commit();
+                            }
+                            else{
+                                $transaction->rollBack();
+                                return $this->getResponse(null, 500);
+                            }
+
+                        }
+
+                        catch (\Exception $e) {
+                            print_r($e);
+                            return $this->getResponse(null, 500);
+                        }
                         return $this->getResponse();
+
                     }
                     else{
                         return $this->getResponse(null, 401);
@@ -212,7 +246,8 @@ class AudiobooksSetsController extends MyController
     }
 
     /**
-     * Endpoint for , getting sets data , you need to pass in request a valid catalog token to get a table with names of saved books
+     *
+     * Endpoint który służy do pobierania danych pojedynczego setu po podaniu jego tokenu
      *
      * @Route("/audiobooks/getSetData", name="get_sets_data", methods={"POST"})
      *
@@ -338,7 +373,7 @@ class AudiobooksSetsController extends MyController
     }
     /**
          *
-         * This endpoint is changing a set name in json file and directory
+         * Endpoint który służy do zmiany nazwy Setu oraz zmiany pliku json
          *
          * @Route("/audiobooks/changeSetName", name="change_set_name", methods={"POST"})
          *
@@ -394,6 +429,34 @@ class AudiobooksSetsController extends MyController
 
                         if($added){
                             rename($_ENV['MAIN_DIR']."/".$oldName, $_ENV['MAIN_DIR']."/".$newName);
+                            $entityManager = $this->getDoctrine();
+                            $dbTool = new DBTool($entityManager);
+                            try {
+                                $em = $dbTool->getEntityManager();
+                                $transaction = $em->getConnection();
+                                $transaction->beginTransaction();
+
+                                $institution = $dbTool->findBy(Institution::class, ["name" => $_ENV['INSTITUTION_NAME']]);
+                                $category = $dbTool->findBy(Category::class, ["institution_id" => $institution[0]->getId(),"name" => $oldName]);
+
+                                if($category)
+                                {
+                                    $category[0]->setName($object->new_name);
+                                    $dbTool->insertData($category[0]);
+
+                                    $transaction->commit();
+                                }
+                                else{
+                                    $transaction->rollBack();
+                                    return $this->getResponse(null, 500);
+                                }
+
+                            }
+
+                            catch (\Exception $e) {
+                                print_r($e);
+                                return $this->getResponse(null, 500);
+                            }
                             return $this->getResponse();
                         }
                         else{
@@ -417,7 +480,7 @@ class AudiobooksSetsController extends MyController
 
     /**
      *
-     * This endpont is deleting a giving set with his name
+     * Endpoint który służy do usuwania podanego setu po podaniu jego nazwy i tokenu
      *
      * @Route("/audiobooks/deleteSet", name="delete_set", methods={"POST"})
      *
@@ -471,6 +534,33 @@ class AudiobooksSetsController extends MyController
                                 $audioEngine = new AudiobookEngine();
                                 if($audioEngine->removeDir($name))
                                 {
+                                    $entityManager = $this->getDoctrine();
+                                    $dbTool = new DBTool($entityManager);
+                                    try {
+                                        $em = $dbTool->getEntityManager();
+                                        $transaction = $em->getConnection();
+                                        $transaction->beginTransaction();
+
+                                        $institution = $dbTool->findBy(Institution::class, ["name" => $_ENV['INSTITUTION_NAME']]);
+                                        $category = $dbTool->findBy(Category::class, ["institution_id" => $institution[0]->getId(),"name" => $name]);
+
+                                        if($category)
+                                        {
+                                            $dbTool->removeData($category[0]);
+
+                                            $transaction->commit();
+                                        }
+                                        else{
+                                            $transaction->rollBack();
+                                            return $this->getResponse(null, 500);
+                                        }
+
+                                    }
+
+                                    catch (\Exception $e) {
+                                        print_r($e);
+                                        return $this->getResponse(null, 500);
+                                    }
                                     return $this->getResponse();
                                 }
                                 else{

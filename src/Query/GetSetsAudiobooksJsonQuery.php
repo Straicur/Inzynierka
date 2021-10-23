@@ -40,7 +40,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$filename");
+     * @SWG\Property(type="string", maxLength=255, description="filename");
      */
     public $filename;
 
@@ -51,7 +51,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$version");
+     * @SWG\Property(type="string", maxLength=255, description="version");
      */
     public $version;
 
@@ -60,7 +60,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @JMSA\Type("string")
      *
-     * @SWG\Property(type="string", maxLength=255, description="$title");
+     * @SWG\Property(type="string", maxLength=255, description="title");
      */
     public $title;
 
@@ -71,7 +71,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$album");
+     * @SWG\Property(type="string", maxLength=255, description="album");
      */
     public $album;
 
@@ -82,7 +82,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$author");
+     * @SWG\Property(type="string", maxLength=255, description="author");
      */
     public $author;
 
@@ -93,7 +93,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$albumAuthor");
+     * @SWG\Property(type="string", maxLength=255, description="albumAuthor");
      */
     public $album_author;
 
@@ -104,7 +104,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$track");
+     * @SWG\Property(type="string", maxLength=255, description="track");
      */
     public $track;
 
@@ -115,7 +115,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$year");
+     * @SWG\Property(type="string", maxLength=255, description="year");
      */
     public $year;
 
@@ -126,7 +126,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$desc");
+     * @SWG\Property(type="string", maxLength=255, description="desc");
      */
     public $desc;
 
@@ -137,7 +137,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$genre");
+     * @SWG\Property(type="string", maxLength=255, description="genre");
      */
     public $genre;
 
@@ -148,7 +148,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$publisher");
+     * @SWG\Property(type="string", maxLength=255, description="publisher");
      */
     public $publisher;
 
@@ -159,7 +159,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$comments");
+     * @SWG\Property(type="string", maxLength=255, description="comments");
      */
     public $comments;
 
@@ -170,7 +170,7 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$duration");
+     * @SWG\Property(type="string", maxLength=255, description="duration");
      */
     public $duration;
 
@@ -181,8 +181,18 @@ class GetSetsAudiobooksJsonQuery{
      *
      * @DataRequired
      *
-     * @SWG\Property(type="string", maxLength=255, description="$size");
+     * @SWG\Property(type="string", maxLength=255, description="size");
      */
     public $size;
+    /**
+     * @var string
+     *
+     * @JMSA\Type("string")
+     *
+     * @DataRequired
+     *
+     * @SWG\Property(type="string", maxLength=255, description="parts");
+     */
+    public $parts;
 
 }

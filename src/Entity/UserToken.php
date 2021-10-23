@@ -9,9 +9,9 @@ use DateTime;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="userToken")
+ * @ORM\Table(name="UserToken")
  *  @NamedQueries({
- *     @NamedQuery(name="active", query="SELECT t FROM App:UserToken t WHERE t.active = 1"),
+ *     @NamedQuery(name="active", query="SELECT t FROM App:UserToken t WHERE t.active = 1 AND t.user_id = :user_id"),
  *     @NamedQuery(name="unactive", query="SELECT t FROM App:UserToken t WHERE t.active = 0")
  * })
  */
@@ -34,7 +34,7 @@ class UserToken
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
      */
     private $user_id;
 
@@ -111,14 +111,14 @@ class UserToken
         return $this;
     }
 
-    public function getUserId(): ?AdminUser
+    public function getUserId(): ?User
     {
-        return $this->admin_id;
+        return $this->user_id;
     }
 
-    public function setUserId(?AdminUser $admin_id): self
+    public function setUserId(?User $user_id): self
     {
-        $this->admin_id = $admin_id;
+        $this->user_id = $user_id;
 
         return $this;
     }

@@ -18,12 +18,15 @@ use JMS\Serializer\SerializerBuilder;
 
 /**
  * Class MyController
+ *
+ * Podstawowa Klasa Controllera z wszystkimi generycznymi metodami
+ *
  * @package App\Controller
  */
 class MyController extends AbstractController{
 
     /**
-     * getJsonData is deserializing $request to given Class($className) and returning it as a Json
+     * Metoda która deserializuje request z do podanej kalsy
      *
      * @param Request $request
      *
@@ -40,9 +43,10 @@ class MyController extends AbstractController{
     }
 
     /**
-     * Method authorize as a parameter is taking a single Token and is checking if this token is active
-     * If yes it will add 10 min to $active_to value and will return true
-     * If not it will find all Tokens with flag activ set to 1 and change it to 0 and will return false
+     *
+     * Metoda która sprawdza czy podany admin/użytkownik jest zalogowany poptrzez sprawdzenie znalezionego tokenu i sprawdznie
+     * w bazie czy ma ustawioną flagę active na true i jeśli tak to wydłuża jego życie o dodatkowe 10 min oraz po czym usuwa nieaktywne
+     * Oraz gdy podany token nie jest aktywny to dezaktywuje wszystkie tokeny tego admina/użytkownika
      *
      * @param $query
      * @param $admin
@@ -82,11 +86,12 @@ class MyController extends AbstractController{
                 return true;
             }
             else {
+                $id = $query->getUserId();
                 if($admin){
-                    $allTokens = $dbTool->findBySQL(Token::class,"active",[]);
+                    $allTokens = $dbTool->findBySQL(Token::class,"active",["admin_id"=>$id]);
                 }
                 else{
-                    $allTokens = $dbTool->findBySQL(UserToken::class,"active",[]);
+                    $allTokens = $dbTool->findBySQL(UserToken::class,"active",["user_id"=>$id]);
                 }
                 if(count($allTokens)>0){
                     foreach ($allTokens as $token){
@@ -104,6 +109,58 @@ class MyController extends AbstractController{
     }
 
     /**
+     * Metoda która szuka podanego tokenu w bazie i jeśli istnieje to zwraca go
+     *
+     * @param $token
+     * @param $admin
+     * @return array|false
+     */
+    protected  function getauthorizeToken($token,$admin){
+        $doctrine = $this->getDoctrine();
+        $dbTool = new DBTool($doctrine);
+
+        if($admin){
+            $findedToken = $dbTool->findBy(Token::class,["token"=>$token],1);
+        }
+
+        else{
+            $findedToken = $dbTool->findBy(UserToken::class,["token"=>$token],1);
+        }
+        if(!empty($findedToken)){
+            return $findedToken;
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
+     * Metoda która sprawdza czy podany token istnieje i jeśli tak to sprawdza czy jest aktywny
+     *
+     * @param $token
+     * @param bool $admin
+     * @return bool
+     */
+    protected function authorizeToken($token, bool $admin=false): bool
+    {
+        $token = $this->getauthorizeToken($token,$admin);
+
+        if(!$token){
+            return false;
+        }
+        else{
+            if ($this->authorize($token[0],$admin)) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    /**
+     *
+     * Metoda która służy do dezaktywacji podanego tokenu
+     *
      * @param $token
      * @param bool $admin
      * @return bool
@@ -130,59 +187,9 @@ class MyController extends AbstractController{
             return false;
         }
     }
-
     /**
-     * This method is trying to find given token in database and returning one if there is one
      *
-     * @param $token
-     * @param $admin
-     * @return array|false
-     */
-    protected  function getauthorizeToken($token,$admin){
-        $doctrine = $this->getDoctrine();
-        $dbTool = new DBTool($doctrine);
-
-        if($admin){
-            $findedToken = $dbTool->findBy(Token::class,["token"=>$token],1);
-        }
-
-        else{
-            $findedToken = $dbTool->findBy(UserToken::class,["token"=>$token],1);
-        }
-        if(!empty($findedToken)){
-            return $findedToken;
-        }
-        else{
-            return false;
-        }
-    }
-
-    /**
-     * This method is checking if There is any given token and if its authorized
-     *
-     * @param $token
-     * @param bool $admin
-     * @return bool
-     */
-    protected function authorizeToken($token, bool $admin=false): bool
-    {
-        $token = $this->getauthorizeToken($token,$admin);
-
-        if(!$token){
-            return false;
-        }
-        else{
-            if ($this->authorize($token[0],$admin)) {
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-    }
-
-    /**
-     * This Method is checking if query object properties are not null and not empty
+     * Metoda która sprawdza czy wszystkie zmienne objektu query zostałe zawarte i nie są puste
      *
      * @param Object $query
      *
@@ -217,7 +224,7 @@ class MyController extends AbstractController{
     }
 
     /**
-     * Method makeJsonData is used to serialize given model and its used later to Serialize Json Model to string in method getResponse
+     * Metoda która serializyje podany model do jsona
      *
      * @param $model
      *
@@ -233,7 +240,7 @@ class MyController extends AbstractController{
     }
 
     /**
-     * Method getResponse is returning new Response with encodedModel and statusCode
+     * Metoda tworząca nowy request z ustawionymi headerami
      *
      * @param string|null $encodedModel
      *

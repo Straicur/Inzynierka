@@ -18,7 +18,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
  */
 class AdminController extends MyController {
     /**
-     * Endpoint login is used to generate new token for user given in request
+     * Endpoint który umożliwia zalogowanie się adminowi , po porawdnym podaniu logina i hasła tworzy token który żyje 10 min
      *
      * @Route("/admin/login", methods={"POST"})
      *
@@ -134,7 +134,7 @@ class AdminController extends MyController {
         }
     }
     /**
-     * Endpoint login is used to generate new token for user given in request
+     * Endpoint który umożliwiwia adminowi wylogowanie się
      *
      * @Route("/admin/logout", methods={"POST"})
      *

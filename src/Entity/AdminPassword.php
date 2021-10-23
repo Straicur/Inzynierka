@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 /**
  * @ORM\Entity
- * @ORM\Table(name="adminPassword")
+ * @ORM\Table(name="AdminPassword")
  */
 class AdminPassword{
     /**

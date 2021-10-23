@@ -5,6 +5,8 @@ namespace App\Tools;
 /**
  * Class MP3FileTool
  *
+ * Pomocnicza metoda dla AudiobooksID3TagsReader która posiada metody formatujące
+ *
  * @package App\Tools
  */
 class MP3FileTool

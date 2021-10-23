@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Engine\AudiobookEngine;
+use App\Entity\Audiobook;
+use App\Entity\Category;
+use App\Entity\Institution;
 use App\JsonModels\GetSetsAudiobooksJsonModel;
 use App\JsonModels\GetSetsModel;
 use App\Model\GetAudiobookModel;
@@ -11,6 +14,7 @@ use App\Model\GetSetsSuccessModel;
 use App\Query\GetAudiobookJsonQuery;
 use App\Tools\AudiobooksActionsTool;
 use App\Tools\DataTool;
+use App\Tools\DBTool;
 use App\Tools\FileBookManager;
 use Exception;
 use JMS\Serializer\SerializerBuilder;
@@ -26,7 +30,8 @@ use ZipArchive;
 class AudiobooksActionsController extends MyController
 {
     /**
-     * Adding new audiobook in given catalog
+     * Endpoint który służy do dodaia nowego audiobooka do serwera , jest w nim zawarta cała logika i zabezpieczenia
+     * Wystarczy podać zipa z audiobookiem
      *
      * @Route("/audiobooks/addAudiobook", name="audiobooks_add", methods={"POST"})
      *
@@ -106,8 +111,38 @@ class AudiobooksActionsController extends MyController
                         //----------------------------------------------------------------------------------------------
                         //And after that unziping created file and at the end we  are creating json file with ID3 tags of tracks i newly added audiobook
                         //----------------------------------------------------------------------------------------------
-                        if($audioTool->unzip($object,$setName,$fileName))
+                        $jsonData=$audioTool->unzip($object,$setName,$fileName);
+                        $entityManager = $this->getDoctrine();
+                        $dbTool = new DBTool($entityManager);
+
+                        if($jsonData)
                         {
+                            try {
+                                $em = $dbTool->getEntityManager();
+                                $transaction = $em->getConnection();
+                                $transaction->beginTransaction();
+
+                                $institution = $dbTool->findBy(Institution::class, ["name" => $_ENV['INSTITUTION_NAME']]);
+                                $category = $dbTool->findBy(Category::class, ["name" => $setName,"institution_id" => $institution[0]->getId()]);
+                                if($category)
+                                {
+                                    $audiobook = new Audiobook($category[0],$jsonData["title"],$jsonData["year"],$jsonData["publisher"],$jsonData["comments"],$jsonData["duration"],$jsonData["parts"]);
+                                    $dbTool->insertData($audiobook);
+
+                                    $transaction->commit();
+                                }
+                                else{
+                                    $transaction->rollBack();
+                                    return $this->getResponse(null, 500);
+                                }
+
+                            }
+
+                            catch (\Exception $e) {
+                                print_r($e);
+                                return $this->getResponse(null, 500);
+                            }
+
                             return $this->getResponse();
                         }
                         //----------------------------------------------------------------------------------------------
@@ -133,7 +168,7 @@ class AudiobooksActionsController extends MyController
         }
     }
     /**
-     * Creating zip file and returning a file dir
+     *  Endpoint który służy do tworzenia zipa z podanego audiobooka i zwraca ścieżkę do niego
      *
      * @Route("/audiobooks/getAudiobook", name="audiobooks_get", methods={"POST"})
      *
@@ -240,7 +275,7 @@ class AudiobooksActionsController extends MyController
     }
 
     /**
-     * sending ZipFile to front
+     *  Endpoint który służy do wysyłania zipa do frontu
      *
      * \/home\/damian\/opt\/audiobooks\/thriller\/dsadsas_dsadsa.zip
      *
@@ -312,7 +347,7 @@ class AudiobooksActionsController extends MyController
     }
     /**
      *
-     * Endpoint for removing audiobook in given name
+     *  Endpoint który służy do usuwania audiobooka o podanej nazwie
      *
      * @Route("/audiobooks/removeAudiobook", name="removeAudiobook", methods={"POST"})
      *
@@ -366,7 +401,22 @@ class AudiobooksActionsController extends MyController
 
                         if($audioEngine->removeDir($setName."/".$name))
                         {
-                            //TODO tu też musze usunąć z bazy
+                            $doc = $this->getDoctrine();
+                            $dbTool = new DBTool($doc);
+                            $em = $dbTool->getEntityManager();
+                            $transaction = $em->getConnection();
+                            $transaction->beginTransaction();
+
+                            try{
+                            $audiobook = $dbTool->findBy(Audiobook::class, ["title" => $name]);
+                            $dbTool->removeData($audiobook[0]);
+                            $transaction->commit();
+                            }
+
+                            catch (\Exception $e) {
+                            $transaction->rollBack();
+                            return $this->getResponse(null, 500);
+                            }
                             return $this->getResponse();
                         }
                         else{
@@ -392,7 +442,7 @@ class AudiobooksActionsController extends MyController
     }
     /**
      *
-     * Endpoint for getting a json file content needed in front form to edit this file
+     * Endpoint który służy do pobrania pliku jsona podanego audiobooka potrzebny przy edycji
      *
      * @Route("/audiobooks/getJsonAudiobook", name="getJsonAudiobook", methods={"POST"})
      *
@@ -473,7 +523,7 @@ class AudiobooksActionsController extends MyController
     }
     /**
      *
-     * This endpoint is reciving data from frontend and changing a audiobook json file  with this data
+     * Endpoint który służy do edycji pliku json danego audibooka oraz zmiany jego danych w bazie
      *
      * @Route("/audiobooks/editAudiobook", name="editAudiobook", methods={"POST"})
      *
@@ -522,7 +572,6 @@ class AudiobooksActionsController extends MyController
 
                     $file = new FileBookManager();
 
-
                     $post_data = DataTool::makeJsonData(array(
                         "filename" => $object->filename,
                         "version" => $object->version,
@@ -537,13 +586,50 @@ class AudiobooksActionsController extends MyController
                         "publisher" => $object->publisher,
                         "comments" => $object->comments,
                         "duration" => $object->duration,
-                        "size" => $object->size));
+                        "size" => $object->size,
+                        "parts" => $object->parts
+                    ));
 
                     $added = $file->writeObjectFile("meta+/!@Data.json", $setName . "/" . $object->name, $post_data, true);
 
                     if ($added) {
-//                    rename($_ENV['MAIN_DIR']."/".$oldName, $_ENV['MAIN_DIR']."/".$newName);
-                        //TODO tu też musze zmienić w bazie teraz
+                    rename($_ENV['MAIN_DIR'] . "/".$setName . "/".$object->name, $_ENV['MAIN_DIR'] . "/".$setName . "/".$object->filename);
+
+                        $entityManager = $this->getDoctrine();
+                        $dbTool = new DBTool($entityManager);
+                        try {
+                            $em = $dbTool->getEntityManager();
+                            $transaction = $em->getConnection();
+                            $transaction->beginTransaction();
+
+                            $institution = $dbTool->findBy(Institution::class, ["name" => $_ENV['INSTITUTION_NAME']]);
+                            $category = $dbTool->findBy(Category::class, ["name" => $setName,"institution_id" => $institution[0]->getId()]);
+                            if($category)
+                            {
+                                $audiobook = $dbTool->findBy(Audiobook::class, ["title" => $object->name,"category_id" => $category[0]->getId()]);
+                                $audiobook[0]->setTitle($object->filename);
+                                $audiobook[0]->setYear($object->year);
+                                $audiobook[0]->setPublisher($object->publisher);
+                                $audiobook[0]->setComments($object->comments);
+                                $audiobook[0]->setDuration($object->duration);
+                                $audiobook[0]->setParts($object->parts);
+
+                                $dbTool->insertData($audiobook[0]);
+
+                                $transaction->commit();
+                            }
+                            else{
+                                $transaction->rollBack();
+                                return $this->getResponse(null, 500);
+                            }
+
+                        }
+
+                        catch (\Exception $e) {
+                            print_r($e);
+                            return $this->getResponse(null, 500);
+                        }
+
                         return $this->getResponse();
                     } else {
                         return $this->getResponse(null, 500);
